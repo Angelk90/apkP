@@ -31,4 +31,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
            name: "App-Artifacts"
-           path: artifacts/*
+           path: android/app/build/outputs/apk/release/
