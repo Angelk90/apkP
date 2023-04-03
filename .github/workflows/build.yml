@@ -20,6 +20,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "android/app/build/outputs/apk/release/app-release.apk"
+          tag: v0.0.0
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
