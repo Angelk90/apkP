@@ -1,17 +1,9 @@
 on:
   push:
-    # Runs on every pushed commit
 
 name: Build  
 jobs:
-  install-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install npm dependencies
-        run: npm install
   build-android:
-    needs: install-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,39 +12,7 @@ jobs:
       - name: Build Android Release
         run: cd android && ./gradlew assembleRelease
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: app-release.apk
           path: android/app/build/outputs/apk/release/
-          
-      - name: Get short SHA
-        id: short_sha
-        run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-
-      - name: Build project # This would actually build your project, using zip for your example date artifact
-        run:  |
-          date > date.txt
-          zip -rT app.zip date.txt
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # Using short SHA from 2nd step for tag and release name.
-          tag_name: ${{steps.short_sha.outputs.sha8}}
-          release_name: ${{steps.short_sha.outputs.sha8}}
-          draft: false
-          prerelease: false
-        # Now we upload the artifact we generated in the first step to
-        # the release we created in the 3nd step
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing its ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./app.zip
-          asset_name: app.zip
-          asset_content_type: application/zip
