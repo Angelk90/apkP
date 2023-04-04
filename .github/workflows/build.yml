@@ -22,19 +22,19 @@ jobs:
         id: package-json-endpoint
 
       - name: Show version number
-        run: echo "${{ steps.package-json-endpoint.outputs.endpoint }}"
+        run: echo "${{ steps.package-json-endpoint.outputs.name }}"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: "apkP-${{ steps.package-json-endpoint.outputs.endpoint }}.apk"
+          name: "apkP-${{ steps.package-json-endpoint.outputs.name }}.apk"
           path: android/app/build/outputs/apk/release/
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "android/app/build/outputs/apk/release/apkP-${{ steps.package-json-endpoint.outputs.endpoint }}.apk"
-          tag: "${{ steps.package-json-endpoint.outputs.endpoint }}"
+          artifacts: "android/app/build/outputs/apk/release/apkP-${{ steps.package-json-endpoint.outputs.name }}.apk"
+          tag: "${{ steps.package-json-endpoint.outputs.name }}"
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
