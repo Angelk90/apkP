@@ -7,7 +7,7 @@ import com.android.build.OutputFile
 import groovy.json.JsonSlurper
 
 // Create an easy to use function
-def getVersionFromNpm() {
+def getVersionFromPackageJson() {
     //  Read and parse package.json file from project root
     def inputFile = new File("$rootDir/../package.json")
     def packageJson = new JsonSlurper().parseText(inputFile.text)
@@ -112,7 +112,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName getVersionFromNpm()
+        versionName getVersionFromPackageJson()
     }
 
     splits {
