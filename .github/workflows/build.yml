@@ -18,23 +18,23 @@ jobs:
         run: cd android && ./gradlew assembleRelease
         
       - name: Read package.json
-        uses: dutscher/read-package-json-endpoint-actions@v1.33.7
-        id: package-json-endpoint
+        uses: tyankatsu0105/read-package-version-actions@v1
+        id: package-version
 
       - name: Show version number
-        run: echo "${{ steps.package-json-endpoint.outputs.name }}"
+        run: echo "Version is ${{ steps.package-version.outputs.version }}"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: "apkP-${{ steps.package-json-endpoint.outputs.name }}.apk"
+          name: "apkP-${{ steps.package-version.outputs.version }}.apk"
           path: android/app/build/outputs/apk/release/
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "android/app/build/outputs/apk/release/apkP-${{ steps.package-json-endpoint.outputs.name }}.apk"
-          tag: "${{ steps.package-json-endpoint.outputs.name }}"
+          artifacts: "android/app/build/outputs/apk/release/apkP-.apk"
+          tag: 0.0.0
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
