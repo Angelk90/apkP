@@ -23,20 +23,11 @@ jobs:
           name: app-release.apk
           path: android/app/build/outputs/apk/release/
 
-      - name: Set new tag
-        id: newtag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          tag=$(gh release view --json tagName --jq '.tagName')
-          IFS=. read -r major minor patch
-          echo "newtag=$major.$minor.$((++patch))" >> "$GITHUB_OUTPUT"
-
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "android/app/build/outputs/apk/release/app-release.apk"
-          tag: ${{ steps.newtag.outputs.newtag }}
+          tag: 0.0.1
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
