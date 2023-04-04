@@ -21,19 +21,16 @@ jobs:
         uses: tyankatsu0105/read-package-version-actions@v1
         id: package-version
 
-      - name: Show version number
-        run: echo "Version is ${{ steps.package-version.outputs.version }}"
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: apkP.apk
+          name: app-release.apk
           path: android/app/build/outputs/apk/release/
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "android/app/build/outputs/apk/release/apkP.apk"
+          artifacts: "android/app/build/outputs/apk/release/app-release.apk"
           tag: "v${{ steps.package-version.outputs.version }}"
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
