@@ -33,7 +33,7 @@ jobs:
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "android/app/build/outputs/apk/release/apkP-.apk"
+          artifacts: "android/app/build/outputs/apk/release/apkP-${{ steps.package-version.outputs.version }}.apk"
           tag: 0.0.0
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
