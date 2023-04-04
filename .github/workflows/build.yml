@@ -1,5 +1,6 @@
-on:
-  push:
+on: 
+  workflow_dispatch:
+    inputs:
 
 name: Build  
 jobs:
@@ -9,20 +10,33 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
+      
       - name: Install npm dependencies
         run: npm install
+        
       - name: Build Android Release
         run: cd android && ./gradlew assembleRelease
+        
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: app-release.apk
           path: android/app/build/outputs/apk/release/
+
+      - name: Set new tag
+        id: newtag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag=$(gh release view --json tagName --jq '.tagName')
+          IFS=. read -r major minor patch
+          echo "newtag=$major.$minor.$((++patch))" >> "$GITHUB_OUTPUT"
+
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "android/app/build/outputs/apk/release/app-release.apk"
-          tag: v0.0.0
+          tag: ${{ steps.newtag.outputs.newtag }}
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
