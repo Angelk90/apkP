@@ -27,13 +27,13 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: "apkP-v${{ steps.package-version.outputs.version }}.apk"
+          name: "apkP.apk"
           path: android/app/build/outputs/apk/release/
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "android/app/build/outputs/apk/release/apkP-v${{ steps.package-version.outputs.version }}.apk"
+          artifacts: "android/app/build/outputs/apk/release/apkP.apk"
           tag: "v${{ steps.package-version.outputs.version }}.apk"
           replacesArtifacts: false
           token: ${{ secrets.GITHUB_TOKEN }}
