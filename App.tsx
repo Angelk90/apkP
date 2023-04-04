@@ -1,5 +1,5 @@
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,18 +10,18 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+//import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-import { Card } from 'react-native-paper';
+import { Card, TextInput } from 'react-native-paper';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
   };
+
+  const [text, setText] = React.useState('');
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -32,20 +32,23 @@ function App(): JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
+        <View style={[backgroundStyle, {}]}>
           <Card>
-          <Text
-          style={[
-            styles.paragraph,
-            {
-              color: isDarkMode ? Colors.white : Colors.black,
-            },
-          ]}>
-            Text
-          </Text>
+            <Text
+              style={[
+                styles.paragraph,
+                {
+                  color: isDarkMode ? '#FFFFFF' : '#000000',
+                },
+              ]}>
+              Text
+            </Text>
+            <TextInput
+              label="Email"
+              mode="outlined"
+              value={text}
+              onChangeText={(text) => setText(text)}
+            />
           </Card>
         </View>
       </ScrollView>
